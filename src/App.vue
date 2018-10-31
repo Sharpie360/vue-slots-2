@@ -1,13 +1,16 @@
 <template>
   <div id="app" class="container">
+    <button class="btn btn-info" id="auto-convert-toggle" @click="toggleAutoConvert">Auto Convert</button>
     <app-learn-slot class="mb-3">
-      <h2 slot="first">Learning Slots</h2>
+      <h1 slot="first">Learning Slots</h1>
       <p>the learning curve is slight</p>
     </app-learn-slot>
     <input type="text" id="userTextInput" v-model="actionText" placeholder="type some text here">
+
+    <button class="btn btn-danger mt-3 mr-3" @click="showCharCode">Get Char Code</button>
     <button class="btn btn-primary mt-3 mr-3" @click="uppercaseText">Uppercase Text</button>
     <button class="btn btn-success mt-3 mr-3" @click="lowercaseText">Lowercase Text</button>
-    <button class="btn btn-danger mt-3 mr-3" @click="showCharCode">Char Code</button>
+    <button class="btn btn-secondary mt-3" @click="clearData">Clear Data</button>
     <hr>
     <app-results-panel class="my-3">
       <span slot="result" class="display-4">{{ actionText }}</span>
@@ -30,7 +33,8 @@ export default {
     return {
       actionText: "",
       charCodeArr: [],
-      charCodeResult: ''
+      charCodeResult: '',
+      autoConvert: false
     };
   },
   components: {
@@ -40,7 +44,9 @@ export default {
   },
   watch: {
     actionText: function(){
-      this.showCharCode()
+      if(this.autoConvert){
+        this.showCharCode()
+      }
     }
   },
   methods: {
@@ -57,6 +63,13 @@ export default {
         console.log(this.charCodeArr)
         this.charCodeResult = this.charCodeArr
       })
+    },
+    clearData(){
+      this.actionText = ''
+      this.charCodeArr = []
+    },
+    toggleAutoConvert(){
+      this.autoConvert = !this.autoConvert
     }
   }
 };
@@ -70,6 +83,12 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+#auto-convert-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
 
 #userTextInput {
